@@ -5,6 +5,7 @@ The final project of CS520. This is a navigation systems optimize for the shorte
 ```bash
 python = 3.7
 flask
+OSMnx(https://github.com/gboeing/osmnx)
 ```
 
 ## Usage
