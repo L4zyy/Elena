@@ -10,7 +10,7 @@ flask
 ## Usage
 Under the root directory, run:
 ```bash
-flash run
+flask run
 ```
 
 and use browser to visit: http://127.0.0.1:5000/
