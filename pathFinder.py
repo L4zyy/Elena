@@ -16,32 +16,32 @@ class PathFinder():
 
         # calculate shortest path
         sp = ox.shortest_path(G, start, end, weight='length')
-        sp_len = get_weight_sum(G, sp, 'length')
-        sp_grad = get_weight_sum(G, sp, 'grade_abs')
+        sp_len = self.get_weight_sum(G, sp, 'length')
+        sp_grad = self.get_weight_sum(G, sp, 'grade_abs')
 
         print('shortest path: ')
         print("  length: ", sp_len)
         print("  height: ", sp_grad)
 
         path = None
-        if weight is 'length' and inverse is False:
+        if weight == 'length' and inverse is False:
             path = sp
         else:
-            if weight is 'height':
+            if weight == 'height':
                 weight = 'grade_abs' if not inverse else 'inv_grade_abs'
             
-            path_gen = ox.k_shortest_paths(G, start, end, self.timeout, weight=weight)
+            path_gen = ox.k_shortest_paths(G, start, end, self._timeout, weight=weight)
 
             cnt = 0
-            for pth in paths:
+            for pth in path_gen:
                 cnt += 1
-                if get_weight_sum(G, pth, 'length') > limit_ratio * sp_len:
+                if self.get_weight_sum(G, pth, 'length') > limit_ratio * sp_len:
                     continue
                 path = pth
                 print(cnt)
                 print('find path under constraint:')
-                print("  length: ", get_weight_sum(G, path, 'length'))
-                print("  height: ", get_weight_sum(G, path, 'grade_abs'))
+                print("  length: ", self.get_weight_sum(G, path, 'length'))
+                print("  height: ", self.get_weight_sum(G, path, 'grade_abs'))
                 break
 
         coords = []

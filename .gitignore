@@ -1,2 +1,8 @@
+# files
 .DS_Store
-key.py
+api_key.txt
+*.ipynb
+
+# folders
+__pycache__/
+
