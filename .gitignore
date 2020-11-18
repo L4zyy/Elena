@@ -1,6 +1,7 @@
 # files
 .DS_Store
 api_key.txt
+key.py
 *.ipynb
 
 # folders

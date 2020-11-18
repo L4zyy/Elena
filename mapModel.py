@@ -40,6 +40,21 @@ class MapModel():
         plt.show()
 
 if __name__ == "__main__":
-    model = MapModel()
-    api_key = ""
-    model.add_elevation_info(api_key)
+    from key import google_elevation_api_key
+
+    timeout = 500
+    orig = (42.3926393, -72.5184199)
+    dest = (42.3749128, -72.4821135)
+
+    model = MapModel(timeout=timeout)
+    model.add_elevation_info(google_elevation_api_key)
+
+    start = ox.get_nearest_node(model.G, orig)
+    end = ox.get_nearest_node(model.G, dest)
+    limit_ratio = 5
+
+    path, coords = model.pathFinder.get_path(model.G, start, end, limit_ratio, 'height', False)
+    print("path", path)
+    print("coords", coords)
+
+    model.plot_path(path)
