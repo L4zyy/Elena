@@ -15,6 +15,22 @@ class MapModel():
         # get map data graph for some city
         self.G = ox.graph_from_place(city, network_type=network_type)
 
+        self.min_x = float('inf')
+        self.max_x = -float('inf')
+        self.min_y = float('inf')
+        self.max_y = -float('inf')
+
+        for node in self.G.nodes:
+            nd = self.G.nodes[node]
+            if nd['x'] > self.max_x:
+                self.max_x = nd['x']
+            if nd['x'] < self.min_x:
+                self.min_x = nd['x']
+            if nd['y'] > self.max_y:
+                self.max_y = nd['y']
+            if nd['y'] < self.min_y:
+                self.min_y = nd['y']
+
     
     def add_elevation_info(self, api_key=None):
         if api_key is None:
