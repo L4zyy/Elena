@@ -55,18 +55,29 @@ var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
 map.addLayer(layer);
 
 var popup = L.popup();
+var count = 0; 
+var but1; 
+var but2; 
 
-function onMapClick(e) {
+function onMapClick(e) { 
     popup
         .setLatLng(e.latlng)
         .setContent("You clicked the map at " + e.latlng.toString())
         .openOn(map);
-
+	
     if (startSelected == false){
+		but1 = L.marker(e.latlng).addTo(map);
+		but1.addTo(map);
+		//L.marker(e.latlng).addTo(map);
     	document.getElementById("startlocation").value = e.latlng.toString();
     	startSelected = true;
     }
-    else{
+    else{ 
+		if (endSelected == true){
+			map.removeLayer(but2)
+		}
+		but2 = L.marker(e.latlng).addTo(map);
+		but2.addTo(map);
     	document.getElementById("endlocation").value = e.latlng.toString();
     	endSelected = true;
     }
@@ -77,6 +88,8 @@ function reselect(){
 	endSelected = false;
 	document.getElementById("startlocation").value = "";
 	document.getElementById("endlocation").value = "";
+	map.removeLayer(but1)
+	map.removeLayer(but2)
 }
 
 map.on('click', onMapClick);
