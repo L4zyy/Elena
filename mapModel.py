@@ -28,6 +28,11 @@ class MapModel():
         for e in self.G.edges:
             self.G.edges[e]['inv_grade_abs'] = 1 / (self.G.edges[e]['grade_abs'] + self._eps)
 
+    def path_info(self, path):
+        length = self.pathFinder.get_weight_sum(self.G, path, 'length')
+        height = self.pathFinder.get_weight_sum(self.G, path, 'grade_abs')
+        return length, height
+
     def get_path(self, start, end, limit_ratio=1.5, weight='height', inverse=False):
         return self.pathFinder.get_path(self.G, start, end, limit_ratio, weight, inverse)
 
