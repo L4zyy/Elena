@@ -14,8 +14,8 @@
 <div id ="topnavbar" class="topnav" style="position: fixed ; left: 55px; top: 100px">
 
     <form id="form" method="post" >
-        <input type="text" disabled="disabled" style="background:#CCCCCC" id="startlocation" name="slocation" placeholder="Start Location"  style = "width:300px; height:40px; ">
-        <input  type="text" disabled="disabled" style="background:#CCCCCC" id="endlocation" name="elocation" placeholder="End Location" style = "width:300px; height:40px;">
+        Start: <input type="text" readonly="readonly" style="background:#CCCCCC" id="startlocation" name="slocation" placeholder="Start Location"  style = "width:300px; height:40px; ">
+        End: <input  type="text" readonly="readonly" style="background:#CCCCCC" id="endlocation" name="elocation" placeholder="End Location" style = "width:300px; height:40px;">
         <button onclick="reselect()" type="button" style = "width:60px; height:30px;font-family: FontAwesome; font-size:16px;background-color:#AED6F1;">Clear</button>
         
 </div>
@@ -42,8 +42,6 @@ var startSelected = false;
 var endSelected = false;
 // Creating map options
 var mapOptions = {
-	maxBounds:[ [42.305842, -72.540402],
-				[42.428183, -72.466113]],
 	center: [42.378076, -72.519946],
 	zoom: 18
 }
@@ -77,11 +75,14 @@ function onMapClick(e) {
         .setLatLng(e.latlng)
         .setContent("You clicked the map at " + e.latlng.toString())
         .openOn(map);
+		
+	if (e.latlng['lat'] > 42.428183|| e.latlng['lat'] < 42.305842 || e.latlng['lng'] < -72.540402 ||e.latlng['lng'] > -72.466113) {
+		window.alert("The location you selected is outside of Amherst area. Please reselect it. ");
+	}
 	
-    if (startSelected == false){
+    else if (startSelected == false){ 
 		but1 = L.marker(e.latlng).addTo(map);
 		but1.addTo(map);
-		//L.marker(e.latlng).addTo(map);
     	document.getElementById("startlocation").value = e.latlng.toString();
     	startSelected = true;
     }
