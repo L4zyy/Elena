@@ -40,8 +40,10 @@ class MapModel():
         self.G = ox.add_node_elevations(self.G, api_key=api_key)
         self.G = ox.add_edge_grades(self.G)
 
-        # calculate inverse grade_abs for maximum elevation path
         for e in self.G.edges:
+            # change grade from ratio to value
+            self.G.edges[e]['grade_abs'] *= self.G.edges[e]['length']
+            # calculate inverse grade_abs for maximum elevation path
             self.G.edges[e]['inv_grade_abs'] = 1 / (self.G.edges[e]['grade_abs'] + self._eps)
 
     def path_info(self, path):
