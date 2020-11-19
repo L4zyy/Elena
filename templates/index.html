@@ -11,6 +11,14 @@
 <div id = "map" style = "width: 100%; height: 1500px; margin-left:auto; margin-right:auto"></div>
 <div id="path" d="{{ path }}" style="display:none"></div>
 <div id="isPath" d="{{ isPath }}" style="display:none"></div>
+<div id="mapcenter1" d="{{ mapcenter1 }}" style="display:none"></div>
+<div id="mapcenter2" d="{{ mapcenter2 }}" style="display:none"></div>
+<div id="zoom1" d="{{ zoom }}" style="display:none"></div>
+
+<div id="cacheStart" d="{{ cacheStart }}" style="display:none"></div>
+<div id="cacheEnd" d="{{ cacheEnd }}" style="display:none"></div>
+
+
 <div id ="topnavbar" class="topnav" style="position: fixed ; left: 55px; top: 100px">
 
     <form id="form" method="post" >
@@ -20,16 +28,20 @@
         
 </div>
 <div id ="topnavbar2" class="topnav2" style="position: fixed ; left: 55px; top: 130px">        
-    % of SD: <br> <input class="form-control" value="100"  type="number" step="0.01" id="percentageofshortestdistance" name="%distance" style = "width:200px; height:20px;">   
+    % of Short Distance: <br> <input class="form-control" value="100"  type="number" step="0.01" id="percentageofshortestdistance" name="%distance" style = "width:200px; height:20px;">   
         <select class="form-control" id="minmax" name="minmax" style = "width:200px; height: 27px;">
-            <option value="Min">Min</option>
-            <option value="Max">Max</option>
+            <option value="Min">Minimize Elevation Gain</option>
+            <option value="Max">Maximize Elevation Gain</option>
         </select>
         <input id="submitbutton" type="submit" value="Search" class="btn btn-primary btn-sm" style = "width:70px;height:30px; font-family: FontAwesome; font-size:16px;background-color:#AED6F1;" >
-		
+
+		<input type="text" readonly="readonly" style="display:none" id="mapcenter" name="mapcenter" placeholder="mapcenter">
+        <input type="text" readonly="readonly" style="display:none" id="zoom" name="zoom" placeholder="zoom">
     </form>
 </div>
-
+<div id ="topnavbar3" class="topnav3" style="position: fixed ; left: 55px; top: 180px">
+    Shortest Path Length: {{ shortest }}, Current Path Length: {{ current }}, Elevation Gain: {{ height }}
+</div>
 <div id ="buttomBar" class="botnav" style="position: fixed ; right: 15px; bottom: 10px">
     <button type="button" onclick="backToOrigin()">Back To Amherst</button>
 </div>
@@ -37,17 +49,29 @@
 <script src = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script>
 var isPath = document.getElementById('isPath').getAttribute('d');
-
+var mapOptions
 var startSelected = false;
 var endSelected = false;
 // Creating map options
-var mapOptions = {
-	center: [42.378076, -72.519946],
-	zoom: 18
+if (isPath == 'true'){
+    mapOptions = {
+    center: [Number(document.getElementById('mapcenter1').getAttribute('d')), Number(document.getElementById('mapcenter2').getAttribute('d'))],
+    zoom: Number(document.getElementById('zoom1').getAttribute('d'))
+    } 
+    document.getElementById("startlocation").value = document.getElementById('cacheStart').getAttribute('d');
+    document.getElementById("endlocation").value = document.getElementById('cacheEnd').getAttribute('d');
+    startSelected = true;
+    endSelected = true;
+}else{
+    mapOptions = {
+    center: [42.378076, -72.519946],
+    zoom: 17
 }
+}
+
 // Creating a map object
 var map = new L.map('map', mapOptions);
-
+var line = null;
 
 // Creating a Layer object
 var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
@@ -55,11 +79,21 @@ var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
 // Adding layer to the map
 map.addLayer(layer);
 
+map.addEventListener('mousemove', function(ev) {
+    document.getElementById("mapcenter").value = map.getCenter().toString();
+    document.getElementById("zoom").value = map.getZoom().toString();
+});
 
+map.addEventListener('wheel', function(ev) {
+    document.getElementById("mapcenter").value = map.getCenter().toString();
+    document.getElementById("zoom").value = map.getZoom().toString();
+});
+document.getElementById("mapcenter").value = map.getCenter().toString();
+document.getElementById("zoom").value = map.getZoom().toString();
 var popup = L.popup();
 var count = 0; 
-var but1; 
-var but2; 
+var but1 = null; 
+var but2 = null; 
 
 var greenIcon = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
@@ -71,6 +105,9 @@ var greenIcon = new L.Icon({
 });
 
 function onMapClick(e) { 
+    document.getElementById("mapcenter").value = map.getCenter().toString();
+    document.getElementById("zoom").value = map.getZoom().toString();
+
     popup
         .setLatLng(e.latlng)
         .setContent("You clicked the map at " + e.latlng.toString())
@@ -102,8 +139,20 @@ function reselect(){
 	endSelected = false;
 	document.getElementById("startlocation").value = "";
 	document.getElementById("endlocation").value = "";
-	map.removeLayer(but1)
-	map.removeLayer(but2)
+    
+    if (but1 != null){
+        map.removeLayer(but1)
+        but1 = null
+    }
+    if (but2 != null){
+        map.removeLayer(but2)
+        but2 = null
+    }
+
+    if (line != null){
+        map.removeLayer(line);
+        line = null
+    }
 }
 
 map.on('click', onMapClick);
@@ -122,7 +171,7 @@ if (isPath == 'true'){
     var path = document.getElementById('path').getAttribute('d');
     var pathList = JSON.parse(path);
     coords = connectTheDots(pathList);
-    var line = L.polyline(coords).addTo(map);
+    line = L.polyline(coords).addTo(map);
 }
 
 function backToOrigin(){
