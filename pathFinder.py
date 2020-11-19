@@ -56,4 +56,4 @@ class PathFinder():
         for node in path:
             coords.append((G.nodes[node]['x'], G.nodes[node]['y']))
 
-        return path, coords, path_length, path_elevation_gain, sp_len, sp_grad
+        return path, coords, int(path_length), int(path_elevation_gain), int(sp_len), int(sp_grad)
