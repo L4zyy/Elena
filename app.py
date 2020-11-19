@@ -37,7 +37,7 @@ def index():
         start = ox.get_nearest_node(model.G, orig)
         end = ox.get_nearest_node(model.G, dest)
 
-        limit_ratio = float(ratio) / 100
+        limit_ratio = float(ratio) / 100.0
         if minmax == "Min":
             inverse = False
         else:
@@ -57,6 +57,7 @@ def index():
         print(pathJson)
         print(zoom)
         return render_template('index.html',path=pathJson,isPath="true",mapcenter1=mapcenter1,mapcenter2=mapcenter2,
-            zoom=zoom,cacheStart=slocation1,cacheEnd=elocation1)
+            zoom=zoom,cacheStart=slocation1,cacheEnd=elocation1,
+            spLength=sp_length,spHeight=sp_elevation_gain,curLength=path_length,curHeight=path_elevation_gain)
     return render_template('index.html', isPath="false")
 

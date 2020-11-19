@@ -8,7 +8,7 @@
 
 
 <h2 id="elena" style="font-size: 25px;Comic Sans MS, Comic Sans, cursive">EleNa: Elevation-based Navigation</h2>
-<div id = "map" style = "width: 100%; height: 1500px; margin-left:auto; margin-right:auto"></div>
+<div id = "map" style = "width: 100%; height: 1500px; margin-left:auto; margin-right:auto; margin-top: 45px"></div>
 <div id="path" d="{{ path }}" style="display:none"></div>
 <div id="isPath" d="{{ isPath }}" style="display:none"></div>
 <div id="mapcenter1" d="{{ mapcenter1 }}" style="display:none"></div>
@@ -39,8 +39,8 @@
         <input type="text" readonly="readonly" style="display:none" id="zoom" name="zoom" placeholder="zoom">
     </form>
 </div>
-<div id ="topnavbar3" class="topnav3" style="position: fixed ; left: 55px; top: 180px">
-    Shortest Path Length: {{ shortest }}, Current Path Length: {{ current }}, Elevation Gain: {{ height }}
+<div id ="topnavbar3" class="topnav3" style="position: fixed ; left: 55px; top: 60px">
+    Shortest Path Length: {{ spLength }}m, Shortest Path Elevation Gain: {{ spHeight }}m, Current Path Length: {{ curLength }}m, Elevation Gain: {{ curHeight }}m
 </div>
 <div id ="buttomBar" class="botnav" style="position: fixed ; right: 15px; bottom: 10px">
     <button type="button" onclick="backToOrigin()">Back To Amherst</button>
@@ -65,7 +65,7 @@ if (isPath == 'true'){
 }else{
     mapOptions = {
     center: [42.378076, -72.519946],
-    zoom: 17
+    zoom: 16
 }
 }
 
@@ -172,10 +172,15 @@ if (isPath == 'true'){
     var pathList = JSON.parse(path);
     coords = connectTheDots(pathList);
     line = L.polyline(coords).addTo(map);
+
+    document.getElementById("topnavbar3").style.display=""
+}
+else{
+    document.getElementById("topnavbar3").style.display="none"
 }
 
 function backToOrigin(){
-	map.setView([42.378076, -72.519946], 17);
+	map.setView([42.378076, -72.519946], 16);
 }
 
 </script>
