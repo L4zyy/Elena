@@ -43,7 +43,7 @@ def index():
         else:
             inverse = True
 
-        path, coords, path_length, path_elevation_gain = model.pathFinder.get_path(model.G, start, end, limit_ratio=limit_ratio, weight='height', inverse=inverse)
+        path, coords, path_length, path_elevation_gain, sp_length, sp_elevation_gain = model.pathFinder.get_path(model.G, start, end, limit_ratio=limit_ratio, weight='height', inverse=inverse)
         print(coords)
         path = [
                 {'lat':orig[0],'lng':orig[1]}
