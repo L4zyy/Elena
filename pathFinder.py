@@ -39,13 +39,21 @@ class PathFinder():
                     continue
                 path = pth
                 print(cnt)
+                '''
+                print("limit_ratio:", limit_ratio)
+                print("sp_len", sp_len)
+                print("sp_len * limit_ratio", limit_ratio * sp_len)
+                print("now length", self.get_weight_sum(G, pth, 'length'))
+                '''
                 print('find path under constraint:')
                 print("  length: ", self.get_weight_sum(G, path, 'length'))
                 print("  height: ", self.get_weight_sum(G, path, 'grade_abs'))
                 break
 
+        path_length = self.get_weight_sum(G, path, 'length')
+        path_elevation_gain = self.get_weight_sum(G, path, 'grade_abs')
         coords = []
         for node in path:
             coords.append((G.nodes[node]['x'], G.nodes[node]['y']))
 
-        return path, coords
+        return path, coords, path_length, path_elevation_gain

@@ -37,13 +37,13 @@ def index():
         start = ox.get_nearest_node(model.G, orig)
         end = ox.get_nearest_node(model.G, dest)
 
-        limit_ratio = float(ratio)
+        limit_ratio = float(ratio) / 100
         if minmax == "Min":
             inverse = False
         else:
             inverse = True
 
-        path, coords = model.pathFinder.get_path(model.G, start, end, limit_ratio=limit_ratio, weight='height', inverse=inverse)
+        path, coords, path_length, path_elevation_gain = model.pathFinder.get_path(model.G, start, end, limit_ratio=limit_ratio, weight='height', inverse=inverse)
         print(coords)
         path = [
                 {'lat':orig[0],'lng':orig[1]}
