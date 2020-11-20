@@ -14,6 +14,8 @@
 <div id="mapcenter1" d="{{ mapcenter1 }}" style="display:none"></div>
 <div id="mapcenter2" d="{{ mapcenter2 }}" style="display:none"></div>
 <div id="zoom1" d="{{ zoom }}" style="display:none"></div>
+<div id="ratio1" d="{{ ratio }}" style="display:none"></div>
+<div id="minmax1" d="{{ minmax }}" style="display:none"></div>
 
 <div id="cacheStart" d="{{ cacheStart }}" style="display:none"></div>
 <div id="cacheEnd" d="{{ cacheEnd }}" style="display:none"></div>
@@ -28,7 +30,7 @@
         
 </div>
 <div id ="topnavbar2" class="topnav2" style="position: fixed ; left: 55px; top: 130px">        
-    % of Short Distance: <br> <input class="form-control" value="100"  type="number" step="0.01" id="percentageofshortestdistance" name="%distance" style = "width:200px; height:20px;">   
+    % of Shortest Distance: <br> <input class="form-control" value="100"  type="number" step="0.01" id="percentageofshortestdistance" name="%distance" style = "width:200px; height:20px;">   
         <select class="form-control" id="minmax" name="minmax" style = "width:200px; height: 27px;">
             <option value="Min">Minimize Elevation Gain</option>
             <option value="Max">Maximize Elevation Gain</option>
@@ -174,6 +176,12 @@ if (isPath == 'true'){
     line = L.polyline(coords).addTo(map);
 
     document.getElementById("topnavbar3").style.display=""
+
+    document.getElementById("percentageofshortestdistance").value = document.getElementById('ratio1').getAttribute('d');
+
+    document.getElementById("minmax").value = document.getElementById('minmax1').getAttribute('d');
+    //$("#minmax").val(document.getElementById('minmax1').getAttribute('d'))
+
 }
 else{
     document.getElementById("topnavbar3").style.display="none"

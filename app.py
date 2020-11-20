@@ -58,6 +58,7 @@ def index():
         print(zoom)
         return render_template('index.html',path=pathJson,isPath="true",mapcenter1=mapcenter1,mapcenter2=mapcenter2,
             zoom=zoom,cacheStart=slocation1,cacheEnd=elocation1,
-            spLength=sp_length,spHeight=sp_elevation_gain,curLength=path_length,curHeight=path_elevation_gain)
+            spLength=sp_length,spHeight=sp_elevation_gain,curLength=path_length,curHeight=path_elevation_gain,
+            ratio=ratio, minmax=minmax)
     return render_template('index.html', isPath="false")
 
