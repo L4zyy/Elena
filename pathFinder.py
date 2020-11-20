@@ -42,9 +42,9 @@ class PathFinder():
         sp_len = self.get_weight_sum(G, sp, 'length')
         sp_grad = self.get_weight_sum(G, sp, 'grade_abs')
 
-        print('shortest path: ')
-        print("  length: ", sp_len)
-        print("  height: ", sp_grad)
+        # print('shortest path: ')
+        # print("  length: ", sp_len)
+        # print("  height: ", sp_grad)
 
         path = None
         if weight == 'length' and inverse is False:
@@ -61,16 +61,16 @@ class PathFinder():
                 if self.get_weight_sum(G, pth, 'length') > limit_ratio * sp_len:
                     continue
                 path = pth
-                print(cnt)
-                '''
-                print("limit_ratio:", limit_ratio)
-                print("sp_len", sp_len)
-                print("sp_len * limit_ratio", limit_ratio * sp_len)
-                print("now length", self.get_weight_sum(G, pth, 'length'))
-                '''
-                print('find path under constraint:')
-                print("  length: ", self.get_weight_sum(G, path, 'length'))
-                print("  height: ", self.get_weight_sum(G, path, 'grade_abs'))
+                # print(cnt)
+
+                # print("limit_ratio:", limit_ratio)
+                # print("sp_len", sp_len)
+                # print("sp_len * limit_ratio", limit_ratio * sp_len)
+                # print("now length", self.get_weight_sum(G, pth, 'length'))
+
+                # print('find path under constraint:')
+                # print("  length: ", self.get_weight_sum(G, path, 'length'))
+                # print("  height: ", self.get_weight_sum(G, path, 'grade_abs'))
                 break
 
         path_length = self.get_weight_sum(G, path, 'length')
