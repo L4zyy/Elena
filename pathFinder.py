@@ -3,12 +3,35 @@ import numpy as np
 
 class PathFinder():
     def __init__(self, timeout=100):
+        '''
+        Parameters:
+            timeout (int): timeout for path finding algorithm
+        '''
         self._timeout = timeout     # timeout limit for finding function
 
     def get_weight_sum(self, G, route, weight):
+        '''
+        Get the accumulated value for a path
+        
+        Parameters:
+            G : map graph object
+            route : path
+            weight (str): path type
+        '''
         return sum(ox.utils_graph.get_route_edge_attributes(G, route, weight))
 
     def get_path(self, G, start, end, limit_ratio, weight='length', inverse=False):
+        '''
+        Return the path with certain constraint
+        
+        Parameters:
+            G : map graph object
+            start (float tuple): coordinate for the start point
+            end (float tuple): coordinate for the end point
+            limit_ratio (float): the length restriction
+            weight (str): path type
+            inverse (bool): switch between maximum and minimum
+        '''
         # transfer node coordinates to node ids
         if type(start) is not np.int64:
             start = ox.get_nearest_node(G, start)
