@@ -7,6 +7,13 @@ from pathFinder import PathFinder
 
 class MapModel():
     def __init__(self, eps=1e-5, city='Amherst, Massachusetts, USA', network_type='drive', timeout=100):
+        '''
+        Parameters:
+            eps (float): epsilon value for the inverse grade calculation
+            city (str): city of the map
+            network_type (str): type of the map
+            timeout (int): timeout for path finding algorithm
+        '''
 
         self._eps = eps         # parameter for the inverse calculation
 
@@ -33,6 +40,12 @@ class MapModel():
 
     
     def add_elevation_info(self, api_key=None):
+        '''
+        update the elevation and grade information for nodes and edges
+        
+        Parameters:
+            api_key (str): Google API key for the elevation information
+        '''
         if api_key is None:
             with open("api_key.txt", "r") as f:
                 api_key = f.readline()
@@ -47,11 +60,27 @@ class MapModel():
             self.G.edges[e]['inv_grade_abs'] = 1 / (self.G.edges[e]['grade_abs'] + self._eps)
 
     def path_info(self, path):
+        '''
+        Return the length and elevation gain of the path
+        
+        Parameters:
+            path (int): Path ID
+        '''
         length = self.pathFinder.get_weight_sum(self.G, path, 'length')
         height = self.pathFinder.get_weight_sum(self.G, path, 'grade_abs')
         return length, height
 
     def get_path(self, start, end, limit_ratio=1.5, weight='height', inverse=False):
+        '''
+        Return the path with certain constraint
+        
+        Parameters:
+            start (float tuple): coordinate for the start point
+            end (float tuple): coordinate for the end point
+            limit_ratio (float): the length restriction
+            weight (str): path type
+            inverse (bool): switch between maximum and minimum
+        '''
         return self.pathFinder.get_path(self.G, start, end, limit_ratio, weight, inverse)
 
     def plot_graph(self):
