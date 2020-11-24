@@ -106,7 +106,7 @@ if __name__ == "__main__":
     limit_ratio = 5
 
     path, coords = model.pathFinder.get_path(model.G, start, end, limit_ratio, 'height', False)
-    print("path", path)
-    print("coords", coords)
+    #print("path", path)
+    #print("coords", coords)
 
     model.plot_path(path)
