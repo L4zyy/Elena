@@ -31,4 +31,7 @@ Run tests with ./scripts/test.sh script. No parameter will run all tests and you
 
 # run model tests
 ./scripts/test.sh tests/model
+
+# run front end tests
+./scripts/test.sh tests/flask
 ```
