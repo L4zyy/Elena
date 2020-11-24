@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash
 import json
 from mapModel import MapModel
 from key import google_elevation_api_key
@@ -24,6 +24,10 @@ def index():
 
         if slocation1 == "" or elocation1 == "" or ratio == "" or minmax == "":
             print("Some input is None!")
+            return render_template('index.html', isPath="false")
+
+        if float(ratio) < 100:
+            print("Ratio should be greater than 100!")
             return render_template('index.html', isPath="false")
 
         slocation = slocation1[7:-1]
